@@ -1,8 +1,9 @@
-﻿// Short implementation of programming language Brainfuck. tcfkat 20240320
+// Short implementation of programming language Brainfuck. tcfkat 20240320
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #define TS 30000//Tape size
+#define IS 10000//Input size
 static uint8_t *t;//Tape
 static int16_t tp;//Tape pointer
 static char *in, *inp;//Input buffer
@@ -13,15 +14,15 @@ uint8_t bc=0;
         if(*inp==a)bc++;
         if(*inp==b){bc--;if(!bc)return;}
         dir?inp++:inp--;
-        if(inp<in||*inp==0||*inp=='\n'||*inp=='\r'){printf("No matching %c\n",b);free(t);free(in);exit(1);}
+        if(inp<in||*inp==0){printf("No matching %c\n",b);free(t);free(in);exit(1);}
     }
 }
 int main(void)
 {
     t=calloc(TS,1);
-    inp=in=calloc(10002,1);
+    inp=in=calloc(IS,1);
     if(!t||!in){printf("No mem\n");return 1;}
-    scanf("%10000s",in);
+    fgets(in, IS-2, stdin);//Minor bug: \n terminates input, no multi-line input
     while(1){
         switch(*inp){
             case'>':if(++tp>=TS)tp=0;inp++;break;//Wrap around end of tape
@@ -32,8 +33,8 @@ int main(void)
             case',':t[tp]=(uint8_t)*inp;inp++;break;
             case'[':if(t[tp]){inp++;}else{bs('[',']',1);inp++;};break;
             case']':bs(']','[',0);break;
-            case 0:case'\n':case'\r':free(t);free(in);return 0;
-            default:break;//Discard anything else
+            case 0:free(t);free(in);return 0;
+            default:inp++;break;//Discard anything else
         }
     }
 }
