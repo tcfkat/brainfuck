@@ -22,7 +22,7 @@ int main(void)
     t=calloc(TS,1);
     inp=in=calloc(IS,1);
     if(!t||!in){if(t)free(t);if(in)free(in);printf("No mem\n");return 1;}
-    fgets(in, IS-2, stdin);//Minor bug: \n terminates input, no multi-line input
+    fgets(in,IS-2,stdin);//Minor bug: \n terminates input, no multi-line input
     while(1){
         switch(*inp){
             case'>':if(++tp>=TS)tp=0;inp++;break;//Wrap around end of tape
