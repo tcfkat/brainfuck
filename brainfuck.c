@@ -1,4 +1,4 @@
-// Short implementation of programming language Brainfuck. tcfkat 20240320
+// Short implementation of programming language Brainfuck. tcfkat 20240321
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -6,7 +6,7 @@
 #define IS 10000//Input size
 static uint8_t *t;//Tape
 static int16_t tp;//Tape pointer
-static char *in, *inp;//Input buffer
+static char *in,*inp;//Input buffer
 static void bs(char a,char b,uint8_t dir)//bracket search
 {
 uint8_t bc=0;
@@ -21,7 +21,7 @@ int main(void)
 {
     t=calloc(TS,1);
     inp=in=calloc(IS,1);
-    if(!t||!in){printf("No mem\n");return 1;}
+    if(!t||!in){if(t)free(t);if(in)free(in);printf("No mem\n");return 1;}
     fgets(in, IS-2, stdin);//Minor bug: \n terminates input, no multi-line input
     while(1){
         switch(*inp){
